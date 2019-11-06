@@ -71,8 +71,8 @@ else;end;
 
 for H = 1:length(tag);
 
-ss4_mix_sources(H,tg,tag);    
-ss5_eegift(H,tg,tag); %% run eegift
+%ss4_mix_sources(H,tg,tag);    
+%ss5_eegift(H,tg,tag); %% run eegift
 ss6_eegift(H,tg,tag); %% visualize components (group) and match to sources
 
 end;

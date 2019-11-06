@@ -40,7 +40,7 @@ load ss1_wavelet_signal.mat themu thesigma Vars into tempL1;
 sr = 250;                               %% sample rate
 goodchan = setdiff(1:64,[60 64 33 43]); %% remove I1, I2, M1, M2 to simplify topographic representations
 
-subs = 6;                               %% number of simulated subjects
+subs = 3;                               %% number of simulated subjects
                             
 
 for H = 1:subs
