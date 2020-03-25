@@ -48,9 +48,10 @@ end;
 
 %% determine which ica source best matches which sim source (gtmatch)
 for k = 1:(nums-1)
-    [theval thein]=max(abs(corrmat(:,k)));
-    gtmatch(k) = thein; %% keep track of which gt matches
+[theval thein]=max(abs(corrmat(:,k)));
+gtmatch(k) = thein;               %% keep track of which gt matches
 end;
+
 %% reshape the ICA components and determine whether they should be flipped
 for G = 1:size(icasig,1)
 [theval2 thein2]=max(abs(corrmat(G,:)));    
