@@ -6,14 +6,14 @@ tempC_sim = [];
 
 for k = 1:length(themu)
 into{k} = [(thein(k)+1):thein(k+1)];     
-tempC_sim = [tempC_sim random('logistic',themu(k),thesigma(k),[1 length(into{k})]).*coeff_weight(k)];
+%tempC_sim = [tempC_sim random('logistic',themu(k),thesigma(k),[1 length(into{k})]).*coeff_weight(k)];
 % AFGR is adding a way to simulate data with skewed and hihgly kurtoic
 % distribution this ewill be performed in R and called through the system
 sample_size = length(into{k});
 out_path = "/tmp/sampleVals" + randi(10000) + ".csv";
 sys_command = "Rscript ../runFA/sampleVals.R -d logistic -m " + themu(k) + " -s " + thesigma(k) + " -S 0 " + " -n " + sample_size  + " -o " + out_path;
 system(sys_command);
-%tempC_sim = csvread(out_path, 1, 0);
+tempC_sim = [tempC_sim (csvread(out_path, 1, 0).*coeff_weight(k))'];
 end;
 
 

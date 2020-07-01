@@ -86,7 +86,7 @@ if(dist == "normal"){
 ###################################################################
 if(dist == "logistic"){
   suppressMessages(suppressWarnings(library(genlogis)))
-  toReturn <- genlogis::rgenlog_sk(10000, mu=meanVal, skew = skewVal, a = sqrt(2/pi), b = 0.5, p = 2)
+  toReturn <- genlogis::rgenlog_sk(sampleSize, mu=meanVal, skew = skewVal, a = sqrt(2/pi), b = 0.5, p = 2)
 }
 
 ###################################################################
