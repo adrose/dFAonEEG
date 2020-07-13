@@ -1,4 +1,4 @@
-function [thedata] = create_ekg_artifact(goodchan, chan_source, sr)
+function [thedata, badChan] = create_ekg_artifact(goodchan, chan_source, chan_sink,sr, a_pwav, lengthK)
 %% This function will be used to create EKG artifact in an EEG simulated cap
 %% Inputs include:
 
@@ -12,7 +12,7 @@ x=0:srm:lengthK;
 rate=60; % bpm
 li=30/rate;  
 %% p wave specifications
-a_pwav=0.25; % amplitude p wave
+a_pwav=a_pwav; % amplitude p wave
 d_pwav=0.09; % duration p wave 
 t_pwav=0.16; %% inter wave lat
 %% q wave specifications
@@ -31,7 +31,7 @@ a_twav=0.35;
 d_twav=0.142;
 t_twav=0.2;
 %% u wav spec
-a_uwav=0.035;
+a_uwav=a_twav*.01;
 d_uwav=0.0476;
 t_uwav=0.433;
 
@@ -58,13 +58,23 @@ for k = 1:length(chan_source)
 EEG.data(chan_source(k),:) = ecg./length(chan_source);
 end;
 
+for k = 1:length(chan_sink)
+EEG.data(chan_sink(k),:) = ecg*-1./length(chan_sink);
+end;
+
 EEG = create_eeglab(EEG,goodchan,sr);
 
 
 %% interpolate
 EEG = eeg_interp(EEG,[setdiff(1:64,[chan_source chan_sink])]);
 
+%% Now zero out all negative patterns
+% This is a hilarious hockey joke
+neg_explore = EEG.data;
+neg_explore = neg_explore.';
+[valCheck_row valCheck_col] = find(mean(neg_explore)<0);
 
-thedata = EEG;
+thedata = EEG.data(EEG.goodchan,:)-repmat(mean(EEG.data(EEG.goodchan,:)),length(EEG.goodchan),1);
+badChan = valCheck_col;
 end
 

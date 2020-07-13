@@ -68,6 +68,16 @@ sources_sim(:,:,G) = tempsig;
 sources_coeff(:,G) = tempcoeff;
 end;
 
+%% Now add the ECG artifact
+G = G+1;
+sim_length = size(sources_sim(:,:,1));
+sim_length = sim_length(2);
+sim_length = sim_length/sr;
+[timeSeries, badChan] = create_ekg_artifact(goodchan,[7, 10, 13, 25, 29, 56], [19, 38, 48], sr, .15, sim_length);
+timeSeries(badChan,:)=0;
+timeSeries(:,1) = [];
+sources_sim(:,:,G) = timeSeries;
+
 cd(thepath);
 cd ss2_create_sim
 eval(sprintf('save ss2_create_sim_sub%02d.mat',H));
